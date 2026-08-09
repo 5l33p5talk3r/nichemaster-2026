@@ -1,63 +1,54 @@
 # NicheMaster 2026
 
-NicheMaster is a digital-ebook storefront and content-generation workspace. This repository is being organized as a small monorepo so the storefront, ebook-generation agent, catalog data, and release archives have clear ownership.
+NicheMaster is a digital-product storefront and ebook-generation system. The repository is organized as a small monorepo so the storefront, ebook-generation agent, catalog data, product assets, and release archives have clear ownership.
 
 ## Repository layout
 
 ```text
 .
 ├── apps/
-│   ├── storefront/          # Customer-facing static storefront
+│   ├── storefront/          # Customer-facing storefront
 │   └── ebook-agent/         # Ebook generation / catalog tooling
 ├── packages/
 │   ├── catalog/             # Canonical niche and product metadata
-│   └── content/             # Generated ebook content and export artifacts
+│   └── content/             # Generated ebook content and exports
 ├── assets/
 │   ├── covers/              # Book cover assets
-│   └── downloads/           # EPUB / HTML / Markdown customer downloads
-├── scripts/                 # Build, import, validation, and maintenance scripts
-├── docs/                    # Architecture, deployment, and operating notes
-└── archive/                 # Legacy packaged releases kept for recovery
+│   └── downloads/           # Customer downloads
+├── migrations/              # Cloudflare D1 migrations
+├── scripts/                 # Build, import, validation, maintenance
+├── docs/                    # Architecture and deployment notes
+├── archive/                 # Legacy packaged releases
+├── worker.js                # Cloudflare Worker API
+└── wrangler.toml            # Cloudflare configuration
 ```
 
-## Source package used for this organization
+## Cloudflare architecture
 
-The supplied NicheMaster workspace contains three logical projects:
+- Cloudflare Pages hosts the static storefront.
+- Cloudflare Workers provides the server-side API.
+- Cloudflare D1 stores purchase records.
+- Cloudflare KV is reserved for wishlist data once the production namespace is created.
 
-- `storefront/` — the expanded storefront and release assets
-- `nichemaster-2026/` — the earlier storefront package and batch data
-- `niche_ebook_agent/` — the repeatable ebook-generation agent and 100-book starter catalog
+`GET /api/health` provides a basic API health check.
 
-The repository currently retains its existing release ZIPs. The organization branch adds the structure and tooling needed to migrate those archives without destroying the original release artifacts.
+`POST /api/purchases` records a completed purchase in D1. It requires `book_id`, `user_email`, `amount_cents`, and `payment_id`; `currency` defaults to `USD`.
+
+The API returns a configuration error until the production D1 binding is enabled.
 
 ## Local development
 
-For the static storefront, no build framework is required. After the storefront files have been extracted into `apps/storefront/`:
+For the static storefront, after the storefront files have been extracted into `apps/storefront/`:
 
 ```bash
 cd apps/storefront
 python -m http.server 8080
 ```
 
-Then open `http://localhost:8080`.
+For the ebook agent, use its project-specific instructions under `apps/ebook-agent/`.
 
-For the ebook agent:
+## Production configuration
 
-```bash
-cd apps/ebook-agent
-python scripts/generate_ebooks.py
-```
+See `docs/CLOUDFLARE_SETUP.md`. Do not commit Cloudflare credentials, payment secrets, webhook secrets, or production resource IDs.
 
-## Important payment configuration
-
-Payment configuration is intentionally kept in a separate storefront config file. Do not commit private API credentials, webhook secrets, or other server-side secrets. The legacy storefront uses a PayPal merchant email for its simple checkout flow; review that configuration before production deployment.
-
-## Deployment target
-
-The storefront is designed for static hosting such as Cloudflare Pages. Keep the customer-facing app dependency-light so it can be deployed without a server build step.
-
-## Organization workflow
-
-Use `scripts/organize_nichemaster.py` to unpack a supplied NicheMaster release into the monorepo layout. The script is deliberately non-destructive: it copies files, preserves the original archive, and reports conflicts instead of silently overwriting files.
-
-See `docs/ARCHITECTURE.md` for the intended ownership of each directory.
+The original release archives are retained until the actual source migration is verified.

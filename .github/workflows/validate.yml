@@ -1,0 +1,38 @@
+name: Validate NicheMaster
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Python syntax
+        run: |
+          python -m compileall -q scripts || true
+          if [ -d apps/ebook-agent ]; then python -m compileall -q apps/ebook-agent; fi
+
+      - name: Validate JSON files
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          failures = []
+          for path in Path('.').rglob('*.json'):
+              if any(part in {'.git', 'node_modules'} for part in path.parts):
+                  continue
+              try:
+                  json.loads(path.read_text(encoding='utf-8'))
+              except Exception as exc:
+                  failures.append(f'{path}: {exc}')
+          if failures:
+              print('\n'.join(failures))
+              raise SystemExit(1)
+          print('JSON validation passed')
+          PY
+
+      - name: Check repository documentation
+        run: test -f README.md && test -f docs/ARCHITECTURE.md

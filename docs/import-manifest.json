@@ -1,0 +1,30 @@
+{
+  "source_archive": "workspace-019fe4c2-7c0d-70a1-b75a-26a7be10fa49(1).zip",
+  "status": "import-mapped",
+  "file_count": 2686,
+  "total_bytes": 193113799,
+  "mapping": {
+    "storefront/": "apps/storefront/",
+    "nichemaster-2026/": "apps/storefront/legacy/",
+    "niche_ebook_agent/ebooks/": "packages/content/ebooks/",
+    "niche_ebook_agent/covers/": "assets/covers/",
+    "niche_ebook_agent/metadata/": "packages/catalog/metadata/",
+    "niche_ebook_agent/niches_master.json": "packages/catalog/niches_master.json",
+    "niche_ebook_agent/niches_master_expanded.json": "packages/catalog/niches_master_expanded.json",
+    "niche_ebook_agent/metadata/ebooks_master_metadata.json": "packages/catalog/ebooks_master_metadata.json",
+    "niche_ebook_agent/other/": "apps/ebook-agent/"
+  },
+  "file_types": {
+    "jpg": 1555,
+    "md": 451,
+    "html": 306,
+    "epub": 300,
+    "json": 32,
+    "zip": 29,
+    "js": 9,
+    "py": 2,
+    "toml": 1,
+    "gitignore": 1
+  },
+  "policy": "Source code and structured data are intended for Git-tracked locations. Large generated EPUB/JPG/ZIP release artifacts should be kept out of normal source commits unless intentionally promoted to release storage."
+}

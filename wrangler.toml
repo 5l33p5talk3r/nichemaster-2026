@@ -1,0 +1,19 @@
+name = "nichemaster-2026"
+compatibility_date = "2026-08-09"
+
+# Cloudflare Pages serves the static storefront from the repository root.
+pages_build_output_dir = "."
+
+# Uncomment these bindings after creating the production resources:
+# [[kv_namespaces]]
+# binding = "NICHEMASTER_KV"
+# id = "YOUR_KV_NAMESPACE_ID"
+#
+# [[d1_databases]]
+# binding = "NICHEMASTER_DB"
+# database_name = "nichemaster-db"
+# database_id = "YOUR_D1_DATABASE_ID"
+
+# Optional standalone Worker entry point.
+# workers_dev = true
+# main = "worker.js"

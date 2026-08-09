@@ -1,0 +1,29 @@
+{
+  "name": "nichemaster-2026",
+  "version": "1.0.0",
+  "description": "NicheMaster 2026 - Premium Ebooks Storefront (1785+ titles)",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler pages dev . --compatibility-date=2024-10-01",
+    "deploy": "npm run deploy:pages",
+    "deploy:pages": "wrangler pages deploy . --project-name=nichemaster-2026 --branch=main",
+    "deploy:preview": "wrangler pages deploy . --project-name=nichemaster-2026 --branch=preview",
+    "deploy:worker": "wrangler deploy",
+    "deploy:all": "npm run deploy:worker && npm run deploy:pages",
+    "update-urls": "node scripts/update-urls.js",
+    "build": "echo 'Static site - no build step needed'",
+    "preview": "wrangler pages dev ."
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  },
+  "keywords": [
+    "ebooks",
+    "digital-products",
+    "cloudflare",
+    "niches",
+    "2026"
+  ],
+  "author": "NicheMaster",
+  "license": "MIT"
+}

@@ -1,0 +1,30 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Node / tooling
+node_modules/
+.npm/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Build / generated scratch output
+dist/
+build/
+.tmp/
+.cache/
+
+# Local exports
+*.log
